@@ -5,6 +5,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:new_project/dimension/dimension.dart';
+import 'package:new_project/screens/map/current_location.dart';
 
 import 'package:new_project/screens/homepage.dart';
 import 'package:new_project/screens/loginpage.dart';
@@ -20,7 +21,7 @@ main() async {
       primarySwatch: Colors.blue,
     ),
     debugShowCheckedModeBanner: false,
-    home: email == null ? MyHomePage() : HomePage(),
+    home: email == null ? MyHomePage() : UserCurrentLocation(),
   ));
 }
 

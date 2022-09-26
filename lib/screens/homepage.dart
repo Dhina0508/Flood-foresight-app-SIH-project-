@@ -5,6 +5,7 @@ import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:new_project/dimension/dimension.dart';
+import 'package:new_project/screens/map/current_location.dart';
 import 'package:new_project/screens/loginpage.dart';
 
 import 'package:new_project/screens/resultpage.dart';
@@ -44,8 +45,10 @@ class _HomePageState extends State<HomePage> {
           elevation: 0,
           leading: IconButton(
               onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => LoginPage()));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => UserCurrentLocation()));
               },
               icon: Icon(
                 Icons.arrow_circle_left_sharp,
@@ -168,36 +171,39 @@ class _HomePageState extends State<HomePage> {
                 SizedBox(
                   height: Dimension.height75,
                 ),
-                ElevatedButton(
-                  // shape: RoundedRectangleBorder(
-                  //     borderRadius: BorderRadius.circular(Dimension.radius30)),
-                  // padding: EdgeInsets.all(0.0),
-                  onPressed: () {
-                    setState(() {});
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => ResultPage()));
-                  },
-                  child: Container(
-                      alignment: Alignment.center,
-                      height: Dimension.height50,
-                      width: Dimension.width45 * 4,
-                      decoration: BoxDecoration(
-                        color: Color.fromRGBO(28, 11, 67, 0.8),
-                        borderRadius: BorderRadius.circular(Dimension.radius15),
-                      ),
-                      child: Padding(
-                        padding: EdgeInsets.only(
-                            top: Dimension.height10,
-                            bottom: Dimension.height10,
-                            right: Dimension.width15,
-                            left: Dimension.width15),
-                        child: Text(
-                          'Show Status',
-                          style: TextStyle(
-                              fontSize: Dimension.iconSize24,
-                              color: Colors.white),
-                        ),
-                      )),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: Color.fromARGB(255, 121, 58, 132)),
+                    // shape: RoundedRectangleBorder(
+                    //     borderRadius: BorderRadius.circular(Dimension.radius30)),
+                    // padding: EdgeInsets.all(0.0),
+                    onPressed: () {
+                      setState(() {});
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ResultPage()));
+                    },
+                    child: Container(
+                        alignment: Alignment.center,
+                        height: Dimension.height50,
+                        width: Dimension.width45 * 4,
+                        child: Padding(
+                          padding: EdgeInsets.only(
+                              top: Dimension.height10,
+                              bottom: Dimension.height10,
+                              right: Dimension.width15,
+                              left: Dimension.width15),
+                          child: Text(
+                            'Show Status',
+                            style: TextStyle(
+                                fontSize: Dimension.iconSize24,
+                                color: Colors.white),
+                          ),
+                        )),
+                  ),
                 )
               ],
             ),

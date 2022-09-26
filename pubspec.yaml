@@ -45,6 +45,12 @@ dependencies:
   pinput: ^2.2.12
   url_launcher: ^6.1.5
   flutter_pin_code_fields: ^1.1.0
+  google_maps_flutter: ^2.1.12
+  geolocator: ^9.0.1
+  flutter_google_places: ^0.3.0
+  awesome_snackbar_content: ^0.0.8
+  
+
 
   
  
@@ -110,7 +116,7 @@ flutter:
         - asset: fonts/Pacifico-Regular.ttf
     - family: Cinzel
       fonts:
-        - asset: fonts/Cinzel-Bold.ttf
+        - asset: fonts/Cinzel-ExtraBold.ttf
     - family: BebasNeue
       fonts:
         - asset: fonts/BebasNeue-Regular.ttf

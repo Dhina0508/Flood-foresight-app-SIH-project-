@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:new_project/dimension/dimension.dart';
 import 'package:new_project/screens/forgot.dart';
+import 'package:new_project/screens/map/current_location.dart';
 import 'package:new_project/screens/homepage.dart';
 import 'package:new_project/screens/loginpage.dart';
 import 'package:new_project/screens/resultpage.dart';
@@ -142,7 +143,8 @@ class _OtpPageState extends State<OtpPage> {
                             Navigator.pushAndRemoveUntil(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => HomePage()),
+                                    builder: (context) =>
+                                        UserCurrentLocation()),
                                 (route) => false);
                           }
                         });
@@ -162,19 +164,13 @@ class _OtpPageState extends State<OtpPage> {
                       //     borderRadius: BorderRadius.circular(30)),
                       // padding: EdgeInsets.all(0.0),
                       onPressed: () {},
-                      child: Ink(
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(30),
-                            color: Color.fromARGB(255, 203, 177, 227)),
-                        child: Container(
-                          height: Dimension.height50,
-                          width: Dimension.width50 * 6,
-                          child: Center(
-                            child: Text(
-                              'Submit',
-                              style:
-                                  TextStyle(color: Colors.black, fontSize: 20),
-                            ),
+                      child: Container(
+                        height: Dimension.height50,
+                        width: Dimension.width50 * 6,
+                        child: Center(
+                          child: Text(
+                            'Submit',
+                            style: TextStyle(color: Colors.black, fontSize: 20),
                           ),
                         ),
                       ),
@@ -197,7 +193,8 @@ class _OtpPageState extends State<OtpPage> {
             if (value.user != null) {
               Navigator.pushAndRemoveUntil(
                   context,
-                  MaterialPageRoute(builder: (context) => HomePage()),
+                  MaterialPageRoute(
+                      builder: (context) => UserCurrentLocation()),
                   (route) => false);
             }
           });

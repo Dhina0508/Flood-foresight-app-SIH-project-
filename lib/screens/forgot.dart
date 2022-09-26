@@ -110,22 +110,20 @@ class _ForgotPageState extends State<ForgotPage> {
                   ),
                   Padding(
                     padding: EdgeInsets.only(top: 40),
-                    child: ElevatedButton(
-                      // color: Color.fromARGB(255, 153, 54, 245),
-                      // shape: RoundedRectangleBorder(
-                      //     borderRadius: BorderRadius.circular(30)),
-                      // padding: EdgeInsets.all(0.0),
-                      onPressed: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => OtpPage(_controller.text)));
-                      },
-                      child: Ink(
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(30),
-                            color: Color.fromARGB(255, 203, 177, 227)),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(20),
+                      child: ElevatedButton(
+                        // color: Color.fromARGB(255, 153, 54, 245),
+                        // shape: RoundedRectangleBorder(
+                        //     borderRadius: BorderRadius.circular(30)),
+                        // padding: EdgeInsets.all(0.0),
+                        onPressed: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => OtpPage(_controller.text)));
+                        },
                         child: Container(
-                          height: 50,
-                          width: 300,
+                          height: Dimension.height50,
+                          width: Dimension.width50 * 6,
                           child: Center(
                             child: Text(
                               'Request OTP',

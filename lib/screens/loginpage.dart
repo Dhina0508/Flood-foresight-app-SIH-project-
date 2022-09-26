@@ -56,9 +56,8 @@ class _LoginPageState extends State<LoginPage> {
                       padding: EdgeInsets.only(bottom: 3),
                       decoration: BoxDecoration(
                           border: Border(
-                              bottom: BorderSide(
-                                  color: Color.fromARGB(255, 174, 79, 190),
-                                  width: 4))),
+                              bottom:
+                                  BorderSide(color: Colors.blue, width: 4))),
                       child: Text(
                         'FLOOD FORESIGHT',
                         style: TextStyle(
@@ -121,7 +120,7 @@ class _LoginPageState extends State<LoginPage> {
                 Padding(
                   padding: EdgeInsets.only(top: Dimension.height60),
                   child: ElevatedButton(
-                   // color: Color.fromRGBO(205, 189, 223, 1),
+                    // color: Color.fromRGBO(205, 189, 223, 1),
                     onPressed: () async {
                       setState(() {});
                       SharedPreferences pref =
@@ -138,9 +137,7 @@ class _LoginPageState extends State<LoginPage> {
                     },
                     child: Text(
                       'Submit',
-                      style: TextStyle(
-                          backgroundColor: Color.fromRGBO(205, 189, 223, 1),
-                          color: Colors.white),
+                      style: TextStyle(color: Colors.white),
                     ),
                   ),
                 ),

@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:new_project/screens/map/current_location.dart';
 import 'package:new_project/screens/homepage.dart';
 import 'package:new_project/screens/loginpage.dart';
 
@@ -11,8 +12,10 @@ class Service {
       await auth
           .createUserWithEmailAndPassword(email: email, password: password)
           .then((value) => {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => HomePage()))
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => UserCurrentLocation()))
               });
     } catch (e) {
       errorBox(context, e);
@@ -24,8 +27,10 @@ class Service {
       await auth
           .signInWithEmailAndPassword(email: email, password: password)
           .then((value) => {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => HomePage()))
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => UserCurrentLocation()))
               });
     } catch (e) {
       errorBox(context, e);
