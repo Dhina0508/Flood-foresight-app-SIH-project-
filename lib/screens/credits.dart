@@ -17,6 +17,16 @@ class _CreditsState extends State<Credits> {
           style: TextStyle(fontFamily: 'Cinzel', fontSize: 22),
         ),
         centerTitle: true,
+        actions: [
+          IconButton(
+              onPressed: () {
+                _onbackbottonpressed(context);
+              },
+              icon: Icon(
+                Icons.question_mark_outlined,
+                size: 20,
+              ))
+        ],
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -219,4 +229,24 @@ class _CreditsState extends State<Credits> {
       ),
     );
   }
+}
+
+Future<bool> _onbackbottonpressed(BuildContext context) async {
+  bool exitApp = await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(''),
+          content: Text(
+              'Credits are given by municipality for contributing to social service of in forming aboout flood risk in our Area'),
+          actions: <Widget>[
+            TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop(false);
+                },
+                child: Text('ok')),
+          ],
+        );
+      });
+  return exitApp;
 }
