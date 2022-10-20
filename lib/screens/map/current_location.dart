@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:new_project/dimension/dimension.dart';
 import 'package:new_project/screens/homepage.dart';
+import 'package:new_project/screens/loginpage.dart';
 import 'package:new_project/screens/map/search.dart';
+import 'package:new_project/screens/sectors.dart';
 
 class UserCurrentLocation extends StatefulWidget {
   const UserCurrentLocation({Key? key}) : super(key: key);
@@ -15,36 +18,80 @@ class _UserCurrentLocationState extends State<UserCurrentLocation> {
   late GoogleMapController googleMapController;
 
   static const CameraPosition initialCameraPosition =
-      CameraPosition(target: LatLng(10.782442, 78.562144), zoom: 6.5);
+      CameraPosition(target: LatLng(23.1, 78.7), zoom: 4.8);
 
-  Set<Marker> markers = {};
+  List<Marker> markers = [];
+  void initState() {
+    initalize();
+    super.initState();
+  }
+
+  initalize() {
+    Marker FirstMarker = Marker(
+        markerId: MarkerId('Trial1'),
+        position: LatLng(12.923721, 80.102037),
+        infoWindow: InfoWindow(
+          title: 'Tambaram',
+        ),
+        onTap: () {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => Sectors()));
+        },
+        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed));
+    markers.add(FirstMarker);
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              Icons.search,
-              color: Colors.black,
-            ),
-            TextButton(
-                onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => HomePage()));
-                },
-                child: Text(
-                  'Search',
-                  style: TextStyle(color: Colors.black, fontFamily: 'Cinzel'),
-                )),
-          ],
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          icon: Icon(
+            Icons.arrow_circle_left_sharp,
+            size: Dimension.iconSize16 * 3,
+            color: Color.fromRGBO(28, 11, 67, 0.9),
+          ),
+        ),
+        title: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(25),
+            color: Color.fromRGBO(28, 11, 67, 0.9),
+          ),
+          height: 40,
+          width: 120,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.search,
+                color: Colors.white,
+              ),
+              TextButton(
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => SearchPlacesScreen()));
+                  },
+                  child: Text(
+                    'Search',
+                    style: TextStyle(color: Colors.white, fontFamily: 'Cinzel'),
+                  )),
+            ],
+          ),
         ),
         centerTitle: true,
       ),
       body: GoogleMap(
         initialCameraPosition: initialCameraPosition,
-        markers: markers,
+        markers: markers.map((e) => e).toSet(),
         zoomControlsEnabled: false,
         mapType: MapType.normal,
         onMapCreated: (GoogleMapController controller) {
@@ -52,6 +99,7 @@ class _UserCurrentLocationState extends State<UserCurrentLocation> {
         },
       ),
       floatingActionButton: FloatingActionButton.extended(
+        backgroundColor: Color.fromARGB(228, 44, 31, 73),
         onPressed: () async {
           Position position = await _determinePosition();
 
@@ -69,7 +117,7 @@ class _UserCurrentLocationState extends State<UserCurrentLocation> {
           setState(() {});
         },
         label: const Text("Current Location"),
-        icon: const Icon(Icons.location_history),
+        icon: const Icon(Icons.my_location_outlined),
       ),
     );
   }

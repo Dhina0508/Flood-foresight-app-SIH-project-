@@ -4,6 +4,8 @@ import 'package:flutter_google_places/flutter_google_places.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_api_headers/google_api_headers.dart';
 import 'package:google_maps_webservice/places.dart';
+import 'package:new_project/dimension/dimension.dart';
+import 'package:new_project/screens/map/current_location.dart';
 
 class SearchPlacesScreen extends StatefulWidget {
   const SearchPlacesScreen({Key? key}) : super(key: key);
@@ -17,7 +19,7 @@ final homeScaffoldKey = GlobalKey<ScaffoldState>();
 
 class _SearchPlacesScreenState extends State<SearchPlacesScreen> {
   static const CameraPosition initialCameraPosition =
-      CameraPosition(target: LatLng(37.42796, -122.08574), zoom: 14.0);
+      CameraPosition(target: LatLng(23.1, 78.7), zoom: 4.8);
 
   Set<Marker> markersList = {};
 
@@ -28,9 +30,35 @@ class _SearchPlacesScreenState extends State<SearchPlacesScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
       key: homeScaffoldKey,
       appBar: AppBar(
-        title: const Text("Google Search Places"),
+        leading: IconButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          icon: Icon(
+            Icons.arrow_circle_left_sharp,
+            size: Dimension.iconSize16 * 3,
+            color: Color.fromRGBO(28, 11, 67, 0.9),
+          ),
+        ),
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+        title: TextField(
+          onTap: _handlePressButton,
+          style: TextStyle(color: Colors.black),
+          decoration: InputDecoration(
+              fillColor: Colors.grey.shade100,
+              filled: true,
+              hintText: 'Type...',
+              hintStyle: TextStyle(color: Colors.black),
+              border: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.black),
+                borderRadius: BorderRadius.circular(Dimension.radius20),
+              )),
+        ),
+        centerTitle: true,
       ),
       body: Stack(
         children: [
@@ -42,8 +70,6 @@ class _SearchPlacesScreenState extends State<SearchPlacesScreen> {
               googleMapController = controller;
             },
           ),
-          ElevatedButton(
-              onPressed: _handlePressButton, child: Text("Search Places"))
         ],
       ),
     );

@@ -44,48 +44,22 @@ class _ResultPageState extends State<ResultPage> {
     final loc = FirebaseDatabase.instance.ref().child("location");
     final drain = FirebaseDatabase.instance.ref().child("drain_level");
     final weather = FirebaseDatabase.instance.ref().child("weather");
+    final temp = FirebaseDatabase.instance.ref().child("current_temperature");
+    final humidity = FirebaseDatabase.instance.ref().child("Humidity(%)");
     return Scaffold(
       extendBodyBehindAppBar: true,
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(70),
-        child: AppBar(
-          title: Text(''),
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          leading: IconButton(
-            onPressed: () {
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => HomePage()));
-            },
-            icon: Icon(
-              Icons.arrow_circle_left_sharp,
-              size: Dimension.iconSize50,
-              color: Color.fromRGBO(28, 11, 67, 0.9),
-            ),
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          icon: Icon(
+            Icons.arrow_circle_left_sharp,
+            size: Dimension.iconSize50,
+            color: Color.fromRGBO(28, 11, 67, 0.9),
           ),
-          actions: [
-            Padding(
-              padding: EdgeInsets.only(right: Dimension.width10),
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Color.fromRGBO(28, 11, 67, 0.9),
-                  shape: BoxShape.circle,
-                ),
-                child: IconButton(
-                    onPressed: () async {
-                      service.signOut(context);
-                      SharedPreferences pref =
-                          await SharedPreferences.getInstance();
-                      pref.remove("email");
-                    },
-                    icon: Icon(
-                      Icons.logout,
-                      size: Dimension.iconSize24,
-                      color: Colors.white,
-                    )),
-              ),
-            )
-          ],
         ),
       ),
       body: Container(
@@ -145,6 +119,7 @@ class _ResultPageState extends State<ResultPage> {
                                       snapshot.value.toString(),
                                       style: TextStyle(
                                           color: Colors.white,
+                                          fontFamily: 'Cinzel',
                                           fontWeight: FontWeight.bold,
                                           fontSize: Dimension.font26),
                                     ),
@@ -197,6 +172,7 @@ class _ResultPageState extends State<ResultPage> {
                                         snapshot.value.toString() + " Inches",
                                         style: TextStyle(
                                             fontSize: Dimension.font20,
+                                            fontWeight: FontWeight.bold,
                                             color: Colors.white),
                                       )
                                     ],
@@ -221,16 +197,84 @@ class _ResultPageState extends State<ResultPage> {
                                               255, 221, 178, 178),
                                           fontWeight: FontWeight.bold),
                                     ),
-                                    Text(
-                                      snapshot.value.toString(),
-                                      style: TextStyle(
-                                          fontSize: Dimension.font20,
-                                          color: Colors.white),
+                                    Expanded(
+                                      child: Text(
+                                        snapshot.value.toString(),
+                                        style: TextStyle(
+                                            fontSize: Dimension.font20,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white),
+                                      ),
                                     )
                                   ],
                                 );
                               }),
                         ),
+                        Padding(
+                            padding: EdgeInsets.only(
+                              top: Dimension.height10 / 2,
+                              bottom: 10,
+                            ),
+                            child: FirebaseAnimatedList(
+                                shrinkWrap: true,
+                                query: temp,
+                                itemBuilder:
+                                    (context, snapshot, animation, index) {
+                                  return Row(
+                                    children: [
+                                      Text(
+                                        "Current Temperature: ",
+                                        style: TextStyle(
+                                            color: Color.fromARGB(
+                                                255, 221, 178, 178),
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: Dimension.font20),
+                                      ),
+                                      Expanded(
+                                        child: Text(
+                                          snapshot.value.toString() + " °C",
+                                          style: TextStyle(
+                                              fontSize: Dimension.font20,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.white),
+                                        ),
+                                      )
+                                    ],
+                                  );
+                                })),
+                        Padding(
+                            padding: EdgeInsets.only(
+                              top: Dimension.height10 / 2,
+                              bottom: 10,
+                            ),
+                            child: FirebaseAnimatedList(
+                                shrinkWrap: true,
+                                query: humidity,
+                                itemBuilder:
+                                    (context, snapshot, animation, index) {
+                                  return Row(
+                                    children: [
+                                      Text(
+                                        "Humidity : ",
+                                        style: TextStyle(
+                                            color: Color.fromARGB(
+                                                255, 221, 178, 178),
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: Dimension.font20),
+                                      ),
+                                      Expanded(
+                                        child: Text(
+                                          snapshot.value.toString() + " %",
+                                          style: TextStyle(
+                                              fontSize: Dimension.font20,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.white),
+                                        ),
+                                      )
+                                    ],
+                                  );
+                                })),
+                        Divider(color: Colors.white),
                         Padding(
                           padding: EdgeInsets.only(
                               top: Dimension.height10,
@@ -240,24 +284,13 @@ class _ResultPageState extends State<ResultPage> {
                               query: flood,
                               itemBuilder:
                                   (context, snapshot, animation, index) {
-                                return Row(
-                                  children: [
-                                    Text(
-                                      'Prediction: ',
-                                      style: TextStyle(
-                                        fontSize: Dimension.font20,
-                                        fontWeight: FontWeight.bold,
-                                        color:
-                                            Color.fromARGB(255, 221, 178, 178),
-                                      ),
-                                    ),
-                                    Text(
-                                      snapshot.value.toString(),
-                                      style: TextStyle(
-                                          fontSize: Dimension.font20,
-                                          color: Colors.white),
-                                    )
-                                  ],
+                                return Text(
+                                  snapshot.value.toString(),
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      fontSize: Dimension.font40,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white),
                                 );
                               }),
                         )
@@ -273,6 +306,8 @@ class _ResultPageState extends State<ResultPage> {
                   onPressed: () {
                     launch('tel://$number');
                   },
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: Color.fromARGB(255, 245, 31, 16)),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
@@ -292,7 +327,7 @@ class _ResultPageState extends State<ResultPage> {
                       ),
                     ],
                   ),
-                 // color: Color.fromRGBO(28, 11, 67, 0.9),
+                  // color: Color.fromRGBO(28, 11, 67, 0.9),
                 ),
               ),
               SizedBox(

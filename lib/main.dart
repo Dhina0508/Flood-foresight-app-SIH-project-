@@ -21,7 +21,7 @@ main() async {
       primarySwatch: Colors.blue,
     ),
     debugShowCheckedModeBanner: false,
-    home: email == null ? MyHomePage() : UserCurrentLocation(),
+    home: email == null ? MyHomePage() : HomePage(),
   ));
 }
 

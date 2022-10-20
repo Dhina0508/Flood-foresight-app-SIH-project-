@@ -12,10 +12,8 @@ class Service {
       await auth
           .createUserWithEmailAndPassword(email: email, password: password)
           .then((value) => {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => UserCurrentLocation()))
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => HomePage()))
               });
     } catch (e) {
       errorBox(context, e);
@@ -27,10 +25,8 @@ class Service {
       await auth
           .signInWithEmailAndPassword(email: email, password: password)
           .then((value) => {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => UserCurrentLocation()))
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => HomePage()))
               });
     } catch (e) {
       errorBox(context, e);

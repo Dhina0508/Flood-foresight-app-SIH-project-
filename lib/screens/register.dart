@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +18,26 @@ class RegisterPage extends StatefulWidget {
 class _RegisterPageState extends State<RegisterPage> {
   TextEditingController _emailcontroller = TextEditingController();
   TextEditingController _passwordcontroller = TextEditingController();
+  TextEditingController _confirmpasswordcontroller = TextEditingController();
+  TextEditingController _NameController = TextEditingController();
+
+  senddata() {
+    final FirebaseAuth _auth = FirebaseAuth.instance;
+    var currentuser = _auth.currentUser;
+
+    final _CollectionReference =
+        FirebaseFirestore.instance.collection("User_data").doc();
+    return _CollectionReference.set({
+      "Name": _NameController.text,
+    }).catchError((onError) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text("ERROR ${onError.toString()}"),
+        behavior: SnackBarBehavior.floating,
+      ));
+    });
+  }
+
+  bool _isHidden = true;
   Service service = Service();
   @override
   Widget build(BuildContext context) {
@@ -29,11 +50,15 @@ class _RegisterPageState extends State<RegisterPage> {
               elevation: 0,
               backgroundColor: Colors.transparent,
               leading: IconButton(
-                  onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => LoginPage()));
-                  },
-                  icon: Icon(Icons.arrow_back))),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                icon: Icon(
+                  Icons.arrow_circle_left_sharp,
+                  size: Dimension.iconSize50,
+                  color: Color.fromRGBO(205, 189, 223, 1),
+                ),
+              )),
           backgroundColor: Colors.transparent,
           body: Stack(children: [
             Container(
@@ -70,6 +95,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 child: Column(
                   children: [
                     TextField(
+                      controller: _NameController,
                       decoration: InputDecoration(
                           fillColor: Colors.grey.shade100,
                           filled: true,
@@ -95,11 +121,15 @@ class _RegisterPageState extends State<RegisterPage> {
                       height: Dimension.height30,
                     ),
                     TextField(
-                      obscureText: true,
+                      obscureText: _isHidden,
                       controller: _passwordcontroller,
                       decoration: InputDecoration(
                           fillColor: Colors.grey.shade100,
                           filled: true,
+                          suffixIcon: InkWell(
+                            onTap: _togglePasswordView,
+                            child: Icon(Icons.visibility),
+                          ),
                           hintText: 'Enter Password',
                           border: OutlineInputBorder(
                               borderRadius:
@@ -109,8 +139,13 @@ class _RegisterPageState extends State<RegisterPage> {
                       height: Dimension.height30,
                     ),
                     TextField(
-                      obscureText: true,
+                      obscureText: _isHidden,
+                      controller: _confirmpasswordcontroller,
                       decoration: InputDecoration(
+                          suffixIcon: InkWell(
+                            onTap: _togglePasswordView,
+                            child: Icon(Icons.visibility),
+                          ),
                           fillColor: Colors.grey.shade100,
                           filled: true,
                           hintText: 'Re-Enter Password',
@@ -126,10 +161,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       children: [
                         TextButton(
                           onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => LoginPage()));
+                            Navigator.of(context).pop();
                           },
                           child: Text('Sign In',
                               style: TextStyle(
@@ -145,6 +177,8 @@ class _RegisterPageState extends State<RegisterPage> {
                               onPressed: () async {
                                 SharedPreferences pref =
                                     await SharedPreferences.getInstance();
+                                // if (_passwordcontroller.text ==
+                                //     _confirmpasswordcontroller) {
                                 if (_emailcontroller.text.isNotEmpty &&
                                     _passwordcontroller.text.isNotEmpty) {
                                   service.createUser(
@@ -153,10 +187,20 @@ class _RegisterPageState extends State<RegisterPage> {
                                       _passwordcontroller.text);
                                   pref.setString("email",
                                       _emailcontroller.text.toString().trim());
+                                  senddata();
                                 } else {
                                   service.errorBox(context,
                                       "Fields must not empty ,please provide valid email and password");
                                 }
+                                // } else {
+                                //   ScaffoldMessenger.of(context)
+                                //       .showSnackBar(SnackBar(
+                                //     content: Text(
+                                //         "ERROR : Passwords should be Same"),
+                                //     behavior: SnackBarBehavior.floating,
+                                //     backgroundColor: Colors.red,
+                                //   ));
+                                // }
                               },
                               icon: Icon(Icons.arrow_forward)),
                         )
@@ -171,5 +215,11 @@ class _RegisterPageState extends State<RegisterPage> {
             )
           ]),
         ));
+  }
+
+  void _togglePasswordView() {
+    setState(() {
+      _isHidden = !_isHidden;
+    });
   }
 }

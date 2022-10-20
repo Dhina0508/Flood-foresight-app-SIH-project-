@@ -1,144 +1,192 @@
-import 'package:email_auth/email_auth.dart';
+import 'package:country_code_picker/country_code_picker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:new_project/dimension/dimension.dart';
-import 'package:new_project/screens/loginpage.dart';
+import 'package:new_project/screens/homepage.dart';
 import 'package:new_project/screens/otp.dart';
 
-class ForgotPage extends StatefulWidget {
-  const ForgotPage({Key? key}) : super(key: key);
+import 'package:pinput/pinput.dart';
 
+class ForgotPage extends StatefulWidget {
   @override
   State<ForgotPage> createState() => _ForgotPageState();
 }
 
 class _ForgotPageState extends State<ForgotPage> {
+  String dialCodeDigits = "+00";
   TextEditingController _controller = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        extendBodyBehindAppBar: true,
-        appBar: AppBar(
-          elevation: 0,
-          backgroundColor: Colors.transparent,
-          leading: IconButton(
-              onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => LoginPage()));
-              },
-              icon: Icon(
-                Icons.arrow_circle_left_rounded,
-                size: Dimension.iconSize16 * 3,
-                color: Color.fromRGBO(205, 189, 223, 1),
-              )),
-        ),
-        body: Stack(children: [
-          Image.asset(
-            'images/rain.jpg',
-            fit: BoxFit.cover,
-            width: double.infinity,
-            height: double.infinity,
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          icon: Icon(
+            Icons.arrow_circle_left_sharp,
+            size: Dimension.iconSize50,
+            color: Color.fromRGBO(28, 11, 67, 0.9),
           ),
-          SingleChildScrollView(
-            child: Padding(
-              padding: EdgeInsets.only(top: Dimension.height50 * 2),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    'Login Account',
-                    style: TextStyle(
-                      fontSize: Dimension.font40,
+        ),
+      ),
+      body: Stack(children: [
+        Image.asset(
+          'images/rain.jpg',
+          width: double.infinity,
+          height: double.infinity,
+          fit: BoxFit.cover,
+        ),
+        SingleChildScrollView(
+            child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SizedBox(
+              height: 70,
+            ),
+            Container(
+              margin: EdgeInsets.only(top: 10),
+              child: Center(
+                child: Text(
+                  "OTP Authentication",
+                  style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      color: Color.fromRGBO(205, 189, 223, 1),
+                      fontSize: 25,
+                      color: Colors.white,
+                      fontFamily: 'JosefinSans'),
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Hello, Welcome Back to our App!',
+                  style: TextStyle(fontSize: 16, color: Colors.grey),
+                ),
+                Icon(Icons.hail_rounded)
+              ],
+            ),
+            SizedBox(
+              height: Dimension.height75,
+            ),
+            Container(
+              margin: EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                gradient: LinearGradient(colors: [
+                  Color.fromARGB(255, 31, 13, 74),
+                  Color.fromRGBO(205, 189, 223, 1),
+                ], begin: Alignment.topCenter, end: Alignment.bottomCenter),
+              ),
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: 30,
+                  ),
+                  Text(
+                    'Select Country Code',
+                    style: TextStyle(
+                      fontSize: 27,
+                      color: Colors.white,
                     ),
                   ),
                   SizedBox(
-                    height: Dimension.height20,
+                    height: 20,
                   ),
-                  Text(
-                    'Hello,Welcome back to our app!',
-                    style: TextStyle(
-                        color: Colors.grey, fontSize: Dimension.font16),
-                  ),
-                  SizedBox(
-                    height: Dimension.height50 * 4,
-                  ),
-                  Text(
-                    'Enter Mobile Number:',
-                    style: TextStyle(
-                        color: Colors.white, fontSize: Dimension.font12 * 2),
-                  ),
-                  SizedBox(
-                    height: Dimension.height15,
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(
-                      left: Dimension.width30,
-                      right: Dimension.width30,
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15),
+                      color: Color.fromARGB(255, 248, 248, 248),
                     ),
+                    margin: EdgeInsets.only(left: 20, right: 20),
+                    width: MediaQuery.of(context).size.width,
+                    height: 50,
+                    child: CountryCodePicker(
+                      onChanged: (country) {
+                        setState(() {
+                          dialCodeDigits = country.dialCode!;
+                        });
+                      },
+                      initialSelection: "IN",
+                      showCountryOnly: false,
+                      showOnlyCountryWhenClosed: false,
+                      favorite: [
+                        "+91",
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: Dimension.height45,
+                  ),
+                  Text(
+                    "Enter Mobile Number",
+                    style: TextStyle(
+                      fontSize: 27,
+                      color: Colors.white,
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(top: 20, right: 20, left: 20),
                     child: TextField(
-                        style: TextStyle(
-                            color: Colors.white, fontSize: Dimension.font20),
-                        keyboardType: TextInputType.number,
-                        maxLength: 10,
-                        controller: _controller,
-                        decoration: InputDecoration(
+                      decoration: InputDecoration(
+                          suffixIcon: Icon(
+                            Icons.call,
+                            color: Colors.green,
+                          ),
+                          border: OutlineInputBorder(
+                              //borderSide: BorderSide(),
+                              borderRadius:
+                                  BorderRadius.circular(Dimension.radius20)),
+                          fillColor: Colors.grey.shade100,
+                          filled: true,
+                          hintText: "Phone Number",
                           prefix: Padding(
                             padding: EdgeInsets.all(4),
-                            child: Text(
-                              '+91',
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          ),
-                          // prefix: Text(''),
-                          suffixIcon: Icon(
-                            Icons.phone_forwarded_rounded,
-                            color: Color.fromARGB(255, 201, 106, 217),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(20),
-                            borderSide:
-                                BorderSide(width: 3, color: Colors.white),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(20),
-                            borderSide:
-                                BorderSide(width: 3, color: Colors.white),
-                          ),
-                        )),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(top: 40),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(20),
-                      child: ElevatedButton(
-                        // color: Color.fromARGB(255, 153, 54, 245),
-                        // shape: RoundedRectangleBorder(
-                        //     borderRadius: BorderRadius.circular(30)),
-                        // padding: EdgeInsets.all(0.0),
-                        onPressed: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => OtpPage(_controller.text)));
-                        },
-                        child: Container(
-                          height: Dimension.height50,
-                          width: Dimension.width50 * 6,
-                          child: Center(
-                            child: Text(
-                              'Request OTP',
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 20),
-                            ),
-                          ),
-                        ),
-                      ),
+                            child: Text(dialCodeDigits),
+                          )),
+                      maxLength: 10,
+                      keyboardType: TextInputType.number,
+                      controller: _controller,
                     ),
                   ),
+                  SizedBox(
+                    height: 25,
+                  )
                 ],
               ),
             ),
-          ),
-        ]));
+            SizedBox(
+              height: Dimension.height50,
+            ),
+            Container(
+                margin: EdgeInsets.all(15),
+                width: Dimension.width50 * 4,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(30),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: Color.fromARGB(255, 112, 54, 146)),
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => OtpPage(
+                                  phone: _controller.text,
+                                  codeDigits: dialCodeDigits)));
+                    },
+                    child: Text('Request OTP'),
+                  ),
+                ))
+          ],
+        )),
+      ]),
+    );
   }
 }

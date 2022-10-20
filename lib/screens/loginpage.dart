@@ -16,6 +16,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  bool _isHidden = true;
   TextEditingController emailcontroller = TextEditingController();
   TextEditingController passwordcontroller = TextEditingController();
   Service service = Service();
@@ -56,8 +57,9 @@ class _LoginPageState extends State<LoginPage> {
                       padding: EdgeInsets.only(bottom: 3),
                       decoration: BoxDecoration(
                           border: Border(
-                              bottom:
-                                  BorderSide(color: Colors.blue, width: 4))),
+                              bottom: BorderSide(
+                                  color: Color.fromARGB(255, 184, 132, 194),
+                                  width: 4))),
                       child: Text(
                         'FLOOD FORESIGHT',
                         style: TextStyle(
@@ -80,7 +82,7 @@ class _LoginPageState extends State<LoginPage> {
                     decoration: InputDecoration(
                         fillColor: Colors.grey.shade100,
                         filled: true,
-                        hintText: 'Enter Login Id',
+                        hintText: 'Enter Email Id or Login Id',
                         hintStyle: TextStyle(color: Colors.black),
                         prefixIcon: Icon(
                           Icons.person,
@@ -100,12 +102,16 @@ class _LoginPageState extends State<LoginPage> {
                   child: TextField(
                     style: TextStyle(color: Colors.black),
                     controller: passwordcontroller,
-                    obscureText: true,
+                    obscureText: _isHidden,
                     decoration: InputDecoration(
                         fillColor: Colors.grey.shade100,
                         filled: true,
                         hintText: 'Enter Password',
                         hintStyle: TextStyle(color: Colors.black),
+                        suffixIcon: InkWell(
+                          onTap: _togglePasswordView,
+                          child: Icon(Icons.visibility),
+                        ),
                         prefixIcon: Icon(
                           Icons.keyboard,
                           color: Colors.black,
@@ -119,25 +125,36 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 Padding(
                   padding: EdgeInsets.only(top: Dimension.height60),
-                  child: ElevatedButton(
-                    // color: Color.fromRGBO(205, 189, 223, 1),
-                    onPressed: () async {
-                      setState(() {});
-                      SharedPreferences pref =
-                          await SharedPreferences.getInstance();
-                      if (emailcontroller.text.isNotEmpty &&
-                          passwordcontroller.text.isNotEmpty) {
-                        service.loginUser(context, emailcontroller.text.trim(),
-                            passwordcontroller.text);
-                        pref.setString("email", emailcontroller.text.trim());
-                      } else {
-                        service.errorBox(context,
-                            "Fields must not empty ,please provide valid email and password");
-                      }
-                    },
-                    child: Text(
-                      'Submit',
-                      style: TextStyle(color: Colors.white),
+                  child: Container(
+                    width: 120,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(20),
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Color.fromARGB(255, 201, 96, 219)),
+                        // color: Color.fromRGBO(205, 189, 223, 1),
+                        onPressed: () async {
+                          setState(() {});
+                          SharedPreferences pref =
+                              await SharedPreferences.getInstance();
+                          if (emailcontroller.text.isNotEmpty &&
+                              passwordcontroller.text.isNotEmpty) {
+                            service.loginUser(
+                                context,
+                                emailcontroller.text.trim(),
+                                passwordcontroller.text);
+                            pref.setString(
+                                "email", emailcontroller.text.trim());
+                          } else {
+                            service.errorBox(context,
+                                "Fields must not empty ,please provide valid email and password");
+                          }
+                        },
+                        child: Text(
+                          'Submit',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
                     ),
                   ),
                 ),
@@ -191,5 +208,11 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
     ]));
+  }
+
+  void _togglePasswordView() {
+    setState(() {
+      _isHidden = !_isHidden;
+    });
   }
 }
